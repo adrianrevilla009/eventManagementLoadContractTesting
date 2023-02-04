@@ -1,0 +1,52 @@
+config:
+  target: "https://127.0.0.1:8443/api"
+  tls:
+    rejectUnauthorized: false                 # Allow https without self-signed certificate
+  phases:
+    - duration: 10
+      arrivalRate: 100
+  payload:                                     # Obtain from a csv already saved users to login the app and attack the endpoint
+    - path: "users.csv"
+      fields:
+        - "username"
+        - "password"
+      order: "sequence"
+      skipHeader: true
+  variables:
+    organizerUsername: "Patxi"
+    organizerPass: "pass"
+
+before:
+  name: "Create event"
+  flow:
+    - post:
+        url: "/events/no-image"
+        auth:                                       # Use auth variables from csv imported data
+          user: "{{ organizerUsername }}"
+          pass: "{{ organizerPass }}"
+        json:                                       # Set request body
+            name: "Test event"
+            description: "Test event"
+            price: "10.0"
+            max_capacity: "50"
+        capture:                                    # We capture event id to use it in another request
+          json: "$.id"
+          as: "id"
+
+scenarios:
+  - name: "Create bunch of tickets"
+    flow:
+      - post:
+          url: "/tickets/?eventId={{ id }}"
+          auth:
+            user: "{{ username }}"
+            pass: "{{ password }}"
+
+after:
+  name: "Delete event"
+  flow:
+        - delete:
+            url: "/events/{{ id }}"
+            auth:
+              user: "{{ organizerUsername }}"
+              pass: "{{ organizerUsername }}"

@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>es.codeurjc.mca</groupId>
-	<artifactId>practica_1_pruebas_ordinaria</artifactId>
+	<artifactId>8-eventManagementLoadContractTesting</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Práctica 1 Pruebas - Convocatoria Ordinaria</name>
 	<description>Demo project for Spring Boot</description>
