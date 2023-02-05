@@ -1,4 +1,6 @@
 config:
+  plugins:
+    ensure: { }
   target: "https://127.0.0.1:8443/api"
   tls:
     rejectUnauthorized: false                 # Allow https without self-signed certificate
@@ -15,6 +17,9 @@ config:
   variables:
     organizerUsername: "Patxi"
     organizerPass: "pass"
+  ensure:
+    thresholds:
+      - "http.codes.201": 50
 
 before:
   name: "Create event"
